@@ -18,7 +18,9 @@ app.use(cors({
 app.use(cookieParser())
 dbConnection()
 const PORT = process.env.port_number || 7000
-
+app.get("/",(req,res)=>{
+    res.send("Chl rha hn")
+})
 
 app.use("/api/auth", authRoute)
 app.use("/api/jobs", jobsRoute)
