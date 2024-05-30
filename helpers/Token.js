@@ -29,8 +29,8 @@ export const validateToken = (req, res, next) => {
             token = authorization.split(' ')[1];
             console.log(token, "====>>token")
             // Verify Token
-            const verification = verify(token, process.env.JWT_SECRET_KEY);
-            const { result } = verify(token, process.env.JWT_SECRET_KEY);
+            const verification = verify(token, process.env.jwt_secret_key);
+            const { result } = verify(token, process.env.jwt_secret_key);
             // console.log("result",result);
             req.user = result;
             next();

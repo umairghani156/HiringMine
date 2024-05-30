@@ -3,8 +3,8 @@ import nodemailer from "nodemailer";
 const emailConfig = {
     service: "gmail",
     auth: {
-        user: process.env.PORTAL_EMAIL,
-        pass: process.env.PORTAL_PASSWORD,
+        user: process.env.portal_email,
+        pass: process.env.portal_password,
     },
     secure: true,
 };
@@ -13,7 +13,7 @@ async function sendEmailOTP(mail, otp) { //krazadev asdad
     const transporter = nodemailer.createTransport(emailConfig);
 
     const mailOptions = {
-        from: process.env.PORTAL_EMAIL,
+        from: process.env.portal_email,
         to: mail,   //krazadev
         subject: "OTP Verification",
         text: `Your OTP is: ${otp}`,
