@@ -15,10 +15,9 @@ const { verify, decode, sign } = pkg;
 
 export const signUp = async (req, res) => {
 
-    // console.log(req.body ,"===>");
     try {
         const { firstName, lastName, userName, email, password, cPassword } = req.body;
-        if (!firstName, !lastName, !userName, !email, !password, !cPassword) {
+        if (!firstName, !lastName, !email, !password, !cPassword) {
             return res.status(BADREQUEST)
                 .send(sendError({ status: false, message: responseMessages.MISSING_FIELDS }))
         }
