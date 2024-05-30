@@ -45,7 +45,6 @@ export const signUp = async (req, res) => {
                     doc.otp = otp
                     doc.expiresIn = Date.now() + 300000;
                     const savedUser = await doc.save()
-                    // console.log(savedUser,"===>");
                     if (savedUser.errors) {
                         return res
                             .status(INTERNALERROR)
@@ -57,7 +56,8 @@ export const signUp = async (req, res) => {
                         const token = GenerateToken({ data: savedUser, expiresIn: '24h' });
 
                         console.log("token", token);
-                        const emailResponse = await sendEmailOTP(email, otp);
+                        console.log("email",email);
+                        const emailResponse =await  sendEmailOTP(email, otp);
                         console.log(emailResponse, "===>");
                         return res.status(CREATED).json(
                             sendSuccess({

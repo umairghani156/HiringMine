@@ -9,16 +9,15 @@ const emailConfig = {
     secure: true,
 };
 
-async function sendEmailOTP(mail, otp) { //krazadev asdad
+async function sendEmailOTP(mail, otp) { 
     const transporter = nodemailer.createTransport(emailConfig);
 
     const mailOptions = {
         from: process.env.portal_email,
-        to: mail,   //krazadev
+        to: mail,  
         subject: "OTP Verification",
         text: `Your OTP is: ${otp}`,
     };
-   console.log("mail",mailOptions);
     try {
         await transporter.sendMail(mailOptions);
         return `OTP sent to ${mail} via email`;

@@ -9,7 +9,7 @@ export const GenerateToken = ({ data, expiresIn }) => {
     //make the key more harder
     //expires in should also be from .env file
     //good approach
-    return sign({ result: data }, process.env.jwt.secret.key, { expiresIn:expiresIn });
+    return sign({ result: data }, process.env.jwt_secret_key, { expiresIn:expiresIn });
 };
 
 export const validateToken = (req, res, next) => {
