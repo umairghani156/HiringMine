@@ -170,9 +170,8 @@ export const login = async (req, res) => {
             };
 
         } else {
-            return res
-                .status(BADREQUEST) //BADREQUEST
-                .send(sendError({ status: false, message: MISSING_FIELDS }));
+            return res.status(BADREQUEST) //BADREQUEST
+                .send(sendError({ status: false, message: responseMessages.MISSING_FIELDS}));
 
         };
 
