@@ -220,7 +220,8 @@ export const forgotPasswordEmail = async (req, res) => {
                         return res.status(OK).send(
                             sendSuccess({
                                 status: true,
-                                message: 'Reset Password Link Generated'
+                                message: 'Reset Password Link Generated',
+                                token,
                             })
                         );
                     }
