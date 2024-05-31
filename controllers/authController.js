@@ -160,7 +160,7 @@ export const login = async (req, res) => {
                     );
                 } else {
                     return res
-                        .status(OK)
+                        .status(FORBIDDEN)
                         .send(sendError({ status: false, message: responseMessages.UN_AUTHORIZED }));
                 };
             } else {
@@ -190,20 +190,20 @@ export const forgotPasswordEmail = async (req, res) => {
         if (email) {
             const user = await Users.findOne({ email: email });
             if (user) {
-                const secret = user._id + process.env.JWT_SECRET_KEY;
+                const secret = user._id + process.env.jwt_secret_key;
                 const token = GenerateToken({ data: secret, expiresIn: '30m' });
                 // res.send(token)
-                const link = `${process.env.WEB_LINK}/api/auth/resetPassword/${user._id}/${token}`;
+                const link = `${process.env.web_link}/api/auth/resetPassword/${user._id}/${token}`;
                 const transporter = nodemailer.createTransport({
                     service: 'gmail',
                     auth: {
-                        user: process.env.PORTAL_EMAIL,
-                        pass: process.env.PORTAL_PASSWORD,
+                        user: process.env.portal_email,
+                        pass: process.env.portal_password,
                     },
                 });
 
                 const mailOptions = {
-                    from: process.env.PORTAL_EMAIL,
+                    from: process.env.portal_email,
                     to: email,
                     subject: 'Reset Password',
                     text: `Please click on the link to reset your password ${link}`,
@@ -253,7 +253,7 @@ export const resetPasswordEmail = async (req, res) => {
         const { newPassword, confirmNewPassword, token } = req.body;
 
         if (newPassword && confirmNewPassword && token) {
-            const { result } = verify(token, process.env.JWT_SECRET_KEY);
+            const { result } = verify(token, process.env.jwt_secret_key);
             const userId = result._id;
             const user = await Users.findById(userId);
             console.log(user);
