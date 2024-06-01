@@ -190,7 +190,7 @@ export const forgotPasswordEmail = async (req, res) => {
         if (email) {
             const user = await Users.findOne({ email: email });
             if (user) {
-                const secret = user + process.env.jwt_secret_key;
+                const secret = user._id + process.env.jwt_secret_key;
                 const token = GenerateToken({ data: secret, expiresIn: '2h' });
                 // res.send(token)
                 const link = `${process.env.web_link}/api/auth/reset_password/${user._id}/${token}`;
@@ -413,8 +413,10 @@ export const resetPasswordEmail = async (req, res) => {
         const { newPassword, confirmNewPassword, token } = req.body;
       
         if (newPassword && confirmNewPassword && token) {
-            const result = verify(token, process.env.jwt_secret_key);
-            console.log("result",result);
+            const {result} = verify(token, process.env.jwt_secret_key);
+            const cvrtJson = result.split("kashmiripolao")[0]
+
+console.log(typeof cvrtJson);
             return
             const userId = result._id;
             const user = await Users.findById(userId);
