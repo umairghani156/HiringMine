@@ -414,11 +414,7 @@ export const resetPasswordEmail = async (req, res) => {
       
         if (newPassword && confirmNewPassword && token) {
             const {result} = verify(token, process.env.jwt_secret_key);
-            const cvrtJson = result.split("kashmiripolao")[0]
-
-console.log(typeof cvrtJson);
-            return
-            const userId = result._id;
+            const userId = result.split("kashmiripolao")[0]
             const user = await Users.findById(userId);
             console.log(user);
             if (user) {
