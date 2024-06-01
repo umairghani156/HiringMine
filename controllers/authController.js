@@ -191,9 +191,9 @@ export const forgotPasswordEmail = async (req, res) => {
             const user = await Users.findOne({ email: email });
             if (user) {
                 const secret = user._id + process.env.jwt_secret_key;
-                const token = GenerateToken({ data: secret, expiresIn: '30m' });
+                const token = GenerateToken({ data: secret, expiresIn: '2h' });
                 // res.send(token)
-                const link = `${process.env.web_link}/api/auth/resetPassword/${user._id}/${token}`;
+                const link = `${process.env.web_link}/api/auth/reset_password/${user._id}/${token}`;
                 const transporter = nodemailer.createTransport({
                     service: 'gmail',
                     auth: {
@@ -221,7 +221,6 @@ export const forgotPasswordEmail = async (req, res) => {
                             sendSuccess({
                                 status: true,
                                 message: 'Reset Password Link Generated',
-                                token,
                             })
                         );
                     }
@@ -248,6 +247,166 @@ export const forgotPasswordEmail = async (req, res) => {
 };
 
 //Reset Password
+export const getResetPassword = async (req, res)=>{
+    const {id, token} = req.params;
+    try{
+        const user = await Users.findById(id);
+        if(!user){
+            return res.status(NOTFOUND).send(responseMessages.NO_USER_FOUND);
+        }
+        try {
+            const verifyUser = verify(token, process.env.jwt_secret_key); 
+            const frontendResetPasswordUrl = `${process.env.FRONTEND_URL}/reset_password/${id}/${token}`;
+            return res.status(OK).send(`
+            <html>
+            <head>
+                <style>
+                   *{
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                   }
+                    .passwordPar{
+                        width: 100%;
+                        height:100%;
+                        display: flex;
+                        justify-content:center;
+                        align-items:center;
+                    }
+                    .passwordWrapper{
+                        max-width:90vw;
+                        width:400px;
+                        height: 150px;
+                        display:flex;
+                        flex-direction:column;
+                        align-items:center;
+                        gap:30px;
+                        padding:15px 10px;
+                        border-radius:10px;
+                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    }
+                    .button {
+                        background-color: rgb(104, 81, 255);
+                        border: none;
+                        color: white;
+                        padding: 15px 32px;
+                        text-align: center;
+                        text-decoration: none;
+                        display: inline-block;
+                        font-size: 16px;
+                        margin: 4px 2px;
+                        cursor: pointer;
+                        border-radius: 10px;
+                    }
+                    #change{
+                        text-align:center;
+                    }
+
+                    .button:hover {
+                        background-color: blue;
+                    }
+                    #header{
+                        font-size: 25px;
+                        font-weight: 500;
+                        font-family: sans-serf;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="passwordPar">
+                 <div class="passwordWrapper">
+                 <div>
+                <p id="header">Verified successfully!</p>
+                <p id="change">Now, Change your password</p>
+                </div>
+                <button class="button" onclick="redirectToResetPassword()">Reset Password</button>
+                </div>
+                </div>
+                <script>
+                    function redirectToResetPassword() {
+                        window.location.href = '${frontendResetPasswordUrl}';
+                    }
+                </script>
+            </body>
+        </html>
+            `);
+        } catch (err) {
+            return res.status(BADREQUEST).send(`
+            <html>
+            <head>
+                <style>
+                   *{
+                    margin: 0;
+                    padding: 0;
+                    box-sizing: border-box;
+                   }
+                    .passwordPar{
+                        width: 100%;
+                        height:100%;
+                        display: flex;
+                        justify-content:center;
+                        align-items:center;
+                    }
+                    .passwordWrapper{
+                        max-width:90vw;
+                        width:400px;
+                        background-color:red;
+                        display:flex;
+                        flex-direction:column;
+                        align-items:center;
+                        gap:30px;
+                        padding:15px 10px;
+                        border-radius:10px;
+                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                    }
+                    .button {
+                        background-color: rgb(104, 81, 255);
+                        border: none;
+                        color: white;
+                        padding: 15px 32px;
+                        text-align: center;
+                        text-decoration: none;
+                        display: inline-block;
+                        font-size: 16px;
+                        margin: 4px 2px;
+                        cursor: pointer;
+                        border-radius: 10px;
+                    }
+                    #change{
+                        text-align:center;
+                    }
+
+                    .button:hover {
+                        background-color: blue;
+                    }
+                    #header{
+                        font-size: 25px;
+                        font-weight: 500;
+                        font-family: sans-serf;
+                        color: white;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="passwordPar">
+                 <div class="passwordWrapper">
+                 <div>
+                <p id="header">You are not Verified!</p>
+                </div>
+                </div>
+                </div>
+                
+            </body>
+        </html>`);
+        }
+
+    }catch(error){
+        res.status(BADREQUEST).send({
+            status: false,
+            message: res.message,
+        })
+    }
+}
 
 export const resetPasswordEmail = async (req, res) => {
     try {
