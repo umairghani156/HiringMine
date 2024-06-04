@@ -48,19 +48,28 @@ export const allJobs = async (req, res)=>{
   const pageNo = req.query.pageNo || 1; // default value
   const keyWord = req.query.keyWord || '';
   const category = req.query.category || '';
-    try{
+  try{
+        let jobs1 = await Jobs.find();
     if(limit){
     const query = {};
     if (keyWord) {
-      query.designation = keyWord.toLowerCase();
+        const normalizedKeyword = keyWord.replace(/\s+/g, '').toLowerCase();
+       
+        const isFound = jobs1.some(job => job.designation.replace(/\s+/g, '').toLowerCase().includes(normalizedKeyword));
+        if (!isFound) {
+            return res.status(404).send({
+                status: false,
+                message: "No jobs availablNo matching job designations found for your search term."
+            });
+        }else{
+            query.designation = new RegExp(normalizedKeyword, 'i');
+        }
     }
     const skip = (pageNo - 1) * limit;
 
     // Fetch jobs from the database with limit and skip
     const totalJobsCount = await Jobs.countDocuments(query);
-    console.log("t",totalJobsCount);
     const adjustedSkip = skip % totalJobsCount;
-    console.log("ad",adjustedSkip);
     const jobs = await Jobs.find(query).limit(limit).skip(adjustedSkip);
 
     res.status(OK).send(jobs);

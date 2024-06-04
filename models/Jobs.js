@@ -12,7 +12,7 @@ const jobs = mongoose.Schema(
             trim: true,
         },
         jobFeseability: {
-            type: [String],
+            type: String,
             required: [true, 'Please add Foreseability'],
         },
         summary:{
@@ -48,6 +48,12 @@ const jobs = mongoose.Schema(
         },
         views:{
             type: Number
+        },
+        level:{
+            type: String,
+        },
+        categories:{
+            type: String
         }
 
     },
