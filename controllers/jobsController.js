@@ -29,7 +29,6 @@ export const addJobs = async (req, res)=>{
             views:views,
         })
         const response = await job.save()
-        console.log("job",response);
          res.status(CREATED).send({
             status: true,
             message: responseMessages.ADD_SUCCESS_MESSAGES,
@@ -45,7 +44,7 @@ export const addJobs = async (req, res)=>{
 
 export const allJobs = async (req, res)=>{
     const limit = req.query.limit; // default value
-  const pageNo = req.query.pageNo || 1; // default value
+  const pageNo = req.query.pageNo || 1;
   const keyWord = req.query.keyWord || '';
   const category = req.query.category || '';
   try{
