@@ -68,7 +68,7 @@ export const allJobs = async (req, res)=>{
 
     // Fetch jobs from the database with limit and skip
     const totalJobsCount = await Jobs.countDocuments(query);
-    const adjustedSkip = skip % totalJobsCount;
+    const adjustedSkip = (skip < 0 ? 1 : skip) % totalJobsCount;
     const jobs = await Jobs.find(query).limit(limit).skip(adjustedSkip);
 
     res.status(OK).send(jobs);
