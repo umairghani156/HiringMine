@@ -49,11 +49,13 @@ export const getCategory = async(req, res)=>{
 }
 
 export const getCategoriesAll =async (req, res)=>{
-    const {keyword,type,price,level,categories} = req.query;
+    const {keyword,type,price,level,categories,jobfeaseability,experience} = req.query;
     console.log(keyword);
     console.log(price);
     console.log(type);
     console.log(categories);
+    console.log(jobfeaseability);
+    console.log(experience);
     const salaryTargetStart = parseInt(price.split("-")[0]);
     const salaryTargetEnd = parseInt(price.split("-")[1]);
     const isLevel = level && level.split("-")[0].slice(0,1).toUpperCase() + level.split("-")[0].slice(1).toLowerCase()
@@ -86,6 +88,12 @@ export const getCategoriesAll =async (req, res)=>{
     if(categories){
         query.categories = { $regex: new RegExp(categories, 'i') };
     }
+    if(jobfeaseability){
+        query.jobFeseability = { $regex: new RegExp(jobfeaseability, 'i') };
+    }
+    if(experience){
+        query.experience = experience
+    }
     // if(jobs_feaseability){
     //     query.jobFeseability = jobs_feaseability
     // }
@@ -95,7 +103,7 @@ export const getCategoriesAll =async (req, res)=>{
         if (response.length === 0) {
             return res.status(404).send({
                 status: false,
-                message: 'No matching jobs found based on your search criteria.'
+                message: 'No matching jobs found based on your filterations.'
             });
         }
          return res.status(OK).send(response)

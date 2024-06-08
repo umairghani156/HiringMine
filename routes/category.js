@@ -7,7 +7,7 @@ const categoriesRoute = express.Router()
 
 categoriesRoute.get("/all", categoriesAll)
 categoriesRoute.get("/job", getCategory)
-categoriesRoute.get("/jobsAll", getCategoriesAll)
+categoriesRoute.get("/filteration/all", getCategoriesAll)
 
 
 
