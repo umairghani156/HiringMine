@@ -103,7 +103,7 @@ export const getCategoriesAll =async (req, res)=>{
         if (response.length === 0) {
             return res.status(404).send({
                 status: false,
-                message: 'No matching jobs found based on your filterations.'
+                message: 'Sorry, we could not find any job for the keywords that you entered'
             });
         }
          return res.status(OK).send(response)

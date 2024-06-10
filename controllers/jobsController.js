@@ -58,7 +58,7 @@ export const allJobs = async (req, res)=>{
         if (!isFound) {
             return res.status(404).send({
                 status: false,
-                message: "No matching job designations found for your search term."
+                message: "Sorry, we could not find any job for the keywords that you entered."
             });
         }else{
             query.designation = new RegExp(normalizedKeyword, 'i');
