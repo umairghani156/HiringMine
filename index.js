@@ -11,7 +11,7 @@ const app = express();
 dotenv.config()
 app.use(express.json())
 app.use(cors({
-    origin: "https://hm-frontend-one.vercel.app/",
+    origin: "https://hm-frontend-liart.vercel.app/",
     methods: ["POST","GET","PUT","DELETE"],
     withCredentials: true,
 }))
