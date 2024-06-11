@@ -11,7 +11,7 @@ const app = express();
 dotenv.config()
 app.use(express.json())
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: "https://hm-frontend-72177nlwf-umair-ahmeds-projects-e72b0614.vercel.app",
     methods: ["POST","GET","PUT","DELETE"],
     withCredentials: true,
 }))
