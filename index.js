@@ -11,7 +11,7 @@ const app = express();
 dotenv.config()
 app.use(express.json())
 app.use(cors({
-    origin: "https://hiringmine-frontend.vercel.app",
+    origin: "https://hiringmineweb-frontend.vercel.app",
     methods: ["POST","GET","PUT","DELETE"],
     withCredentials: true,
 }))
